@@ -1,6 +1,7 @@
 #include "path.h"
 #include <vector>
 #include <iostream>
+#include <stack>
 
 using namespace std;
 
@@ -42,8 +43,12 @@ int game_map[MAP_SIZE][MAP_SIZE] = {
         {0, 0, 0, 0, 0, 0, 0, 0, 0, S},
 };
 
+bool internal_depth_first_search(const state_t &state, stack<state_t> &path, const state_t &end_state, vector<state_t> &already_visited);
+
 vector<state_t> possible_states(const state_t &state);
+std::ostream& operator<<(std::ostream &o, const state_t &s);
 std::ostream& operator<<(ostream& out, const vector<state_t>& vector);
+bool operator==(const state_t &a, const state_t &b);
 
 bool is_obstacle(int x, int y);
 bool is_right_obstacle(const state_t &state);
@@ -56,7 +61,50 @@ int get_next_command()
 
 void depth_first_search()
 {
-    cout << possible_states(state_t(4, 8, 180)) << endl;
+    stack<state_t> path;
+    vector<state_t> already_visited;
+
+    bool found = internal_depth_first_search(state_t(9, 9, 0), path, state_t(0, 9, 0), already_visited);
+    if (found) {
+        while (!path.empty()) {
+            cout << path.top() << endl;
+            path.pop();
+        }
+    }
+}
+
+bool is_already_visited(const vector<state_t> &already_visited, const state_t &state)
+{
+    for (auto &v : already_visited) {
+        if (v == state) {
+            return true;
+        }
+    }
+    return false;
+}
+
+bool internal_depth_first_search(const state_t &state, stack<state_t> &path, const state_t &end_state, vector<state_t> &already_visited)
+{
+    if (is_already_visited(already_visited, state)) {
+        return false;
+    }
+
+    already_visited.push_back(state);
+
+    path.push(state);
+    if (state == end_state) {
+        return true;
+    }
+
+    for (auto &next_state : possible_states(state)) {
+        bool found = internal_depth_first_search(next_state, path, end_state, already_visited);
+        if (found) {
+            return true;
+        }
+    }
+
+    path.pop();
+    return false;
 }
 
 std::ostream& operator<<(std::ostream &o, const state_t &s)
@@ -73,6 +121,11 @@ std::ostream& operator<<(ostream& out, const vector<state_t>& vector)
     }
     out << " ]";
     return out;
+}
+
+bool operator==(const state_t &a, const state_t &b)
+{
+    return a.x == b.x && a.y == b.y && a.theta == b.theta;
 }
 
 vector<state_t> possible_states(const state_t &state)
