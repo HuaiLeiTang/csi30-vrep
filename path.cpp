@@ -6,7 +6,7 @@
 using namespace std;
 
 int current_command = 0;
-int commands[] = {8, 4, 8, 6, 8, 6, 8, 4, 8, 4, 8, 8, 8, 8, 8, 8, 6, 8, 8, 8, 6, 8, 8, 8, 8, 8, 8, 4, 8, 8, 8, 8};
+vector<int> commands;
 
 typedef struct state_t {
     int x;
@@ -22,6 +22,9 @@ typedef struct state_t {
 
 } state_t;
 
+#define WALK 8
+#define RIGHT 6
+#define LEFT 4
 
 #define S 10
 #define D 20
@@ -43,7 +46,7 @@ int game_map[MAP_SIZE][MAP_SIZE] = {
         {0, 0, 0, 0, 0, 0, 0, 0, 0, S},
 };
 
-bool internal_depth_first_search(const state_t &state, stack<state_t> &path, const state_t &end_state, vector<state_t> &already_visited);
+bool internal_depth_first_search(const state_t &state, vector<state_t> &path, const state_t &end_state, vector<state_t> &already_visited);
 
 vector<state_t> possible_states(const state_t &state);
 std::ostream& operator<<(std::ostream &o, const state_t &s);
@@ -54,22 +57,66 @@ bool is_obstacle(int x, int y);
 bool is_right_obstacle(const state_t &state);
 bool is_left_obstacle(const state_t &state);
 
-int get_next_command()
+void set_commands(const vector<int> &c)
 {
-    return commands[current_command++];
+    commands = c;
+    current_command = 0;
 }
 
-void depth_first_search()
+int get_next_command()
 {
-    stack<state_t> path;
-    vector<state_t> already_visited;
+    if (current_command < commands.size()) {
+        return commands[current_command++];
+    }
+    return -1;
+}
 
-    bool found = internal_depth_first_search(state_t(9, 9, 0), path, state_t(0, 9, 0), already_visited);
+int to_command(const state_t &a, const state_t &b)
+{
+    if (a.x != b.x || a.y != b.y) {
+        return WALK;
+    }
+
+    if (a.theta == 0 && b.theta == 90) {
+        return LEFT;
+    } else if (a.theta == 0 && b.theta == 270) {
+        return RIGHT;
+    } else if (a.theta == 90 && b.theta == 180) {
+        return LEFT;
+    } else if (a.theta == 90 && b.theta == 0) {
+        return RIGHT;
+    } else if (a.theta == 180 && b.theta == 270) {
+        return LEFT;
+    } else if (a.theta == 180 && b.theta == 90) {
+        return RIGHT;
+    } else if (a.theta == 270 && b.theta == 0) {
+        return LEFT;
+    } else if (a.theta == 270 && b.theta == 180) {
+        return RIGHT;
+    }
+}
+
+vector<int> to_commands(const vector<state_t> &path)
+{
+    vector<int> result;
+
+    for (int i = 1; i < path.size(); ++i) {
+        result.push_back(to_command(path[i - 1], path[i]));
+    }
+
+    return result;
+}
+
+vector<int> depth_first_search()
+{
+
+    vector<state_t> path;
+    vector<state_t> already_visited;
+    bool found;
+
+    found = internal_depth_first_search(state_t(9, 9, 0), path, state_t(0, 9, 270), already_visited);
     if (found) {
-        while (!path.empty()) {
-            cout << path.top() << endl;
-            path.pop();
-        }
+        return to_commands(path);
     }
 }
 
@@ -83,7 +130,7 @@ bool is_already_visited(const vector<state_t> &already_visited, const state_t &s
     return false;
 }
 
-bool internal_depth_first_search(const state_t &state, stack<state_t> &path, const state_t &end_state, vector<state_t> &already_visited)
+bool internal_depth_first_search(const state_t &state, vector<state_t> &path, const state_t &end_state, vector<state_t> &already_visited)
 {
     if (is_already_visited(already_visited, state)) {
         return false;
@@ -91,7 +138,7 @@ bool internal_depth_first_search(const state_t &state, stack<state_t> &path, con
 
     already_visited.push_back(state);
 
-    path.push(state);
+    path.push_back(state);
     if (state == end_state) {
         return true;
     }
@@ -103,7 +150,7 @@ bool internal_depth_first_search(const state_t &state, stack<state_t> &path, con
         }
     }
 
-    path.pop();
+    path.pop_back();
     return false;
 }
 

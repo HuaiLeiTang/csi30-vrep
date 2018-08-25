@@ -36,7 +36,8 @@ extern "C" {
 
 int main(int argc, char **argv) {
     //enderecamentos remoteapi
-    depth_first_search(); return 0;
+    vector<int> commands = depth_first_search();
+    set_commands(commands);
 
     string serverIP = "127.0.0.1";
     int serverPort = 19999;
@@ -177,10 +178,11 @@ int main(int argc, char **argv) {
 
     //loop de execucao
     while (simxGetConnectionId(clientID) != -1) {
-        pair<int *, managed_shared_memory::size_type> comando1;
-        comando1 = abrindo_memoria->find<int>(NOME_DO_INT_NA_MEMORIA1);
+//        pair<int *, managed_shared_memory::size_type> comando1;
+//        comando1 = abrindo_memoria->find<int>(NOME_DO_INT_NA_MEMORIA1);
 
         int comando = get_next_command();
+        cout << "Comando:" << comando << endl;
 
         simxGetObjectPosition(clientID, bubbleRob, -1, position, simx_opmode_buffer);
         simxGetObjectOrientation(clientID, bubbleRob, -1, angle, simx_opmode_buffer);
