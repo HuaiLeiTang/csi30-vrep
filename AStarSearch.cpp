@@ -1,3 +1,4 @@
+//Bruno Clemente e Thyago Stall
 #include "AStarSearch.hpp"
 #include <algorithm>
 

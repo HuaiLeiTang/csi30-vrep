@@ -1,3 +1,4 @@
+//Bruno Clemente e Thyago Stall
 #ifndef CPPREMOTEAPI_COMMAND_H
 #define CPPREMOTEAPI_COMMAND_H
 

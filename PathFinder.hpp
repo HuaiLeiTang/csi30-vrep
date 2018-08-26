@@ -1,3 +1,4 @@
+//Bruno Clemente e Thyago Stall
 #ifndef CPPREMOTEAPI_PATHFINDER_HPP
 #define CPPREMOTEAPI_PATHFINDER_HPP
 

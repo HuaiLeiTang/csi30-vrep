@@ -1,3 +1,4 @@
+//Bruno Clemente e Thyago Stall
 #ifndef CPPREMOTEAPI_ASTARSEARCH_HPP
 #define CPPREMOTEAPI_ASTARSEARCH_HPP
 

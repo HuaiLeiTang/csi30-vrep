@@ -1,3 +1,4 @@
+//Bruno Clemente e Thyago Stall
 #include <cmath>
 #include <iostream>
 #include <vector>
@@ -36,12 +37,11 @@ vector<int> commands;
 void set_commands(const std::vector<int> &);
 int get_next_command();
 
+void selectPathFinder();
+
 int main(int argc, char **argv)
 {
-	//PathFinder *finder = new  DepthFirstSearch(State::getStartState(), State::getEndState());
-	PathFinder *finder = new  AStarSearch(State::getStartState(), State::getEndState());
-	set_commands(Path::getPath(finder));
-	delete (finder);
+	selectPathFinder();
 
 	string serverIP = "127.0.0.1";
 	int serverPort = 19999;
@@ -492,6 +492,22 @@ int main(int argc, char **argv)
 	simxFinish(clientID); // fechando conexao com o servidor
 	cout << "Conexao e Servidor fechados!" << std::endl;
 	return 0;
+}
+
+void selectPathFinder() {
+	int selection;
+	PathFinder *finder;
+	cout << "Choose which algorithm to use:\n" << "[1] Depth First Search\n" << "[2] A*\n";
+	cin >> selection;
+	if (selection == 1)
+		finder = new DepthFirstSearch(State::getStartState(), State::getEndState());
+	else
+		finder = new AStarSearch(State::getStartState(), State::getEndState());
+	cout << "Finding path\n";
+	auto path = Path::getPath(finder);
+	cout << "Path found!\nThe size is: " << path.size() << endl;
+	set_commands(path);
+	delete (finder);
 }
 
 void set_commands(const vector<int> &c)

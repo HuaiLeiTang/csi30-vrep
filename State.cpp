@@ -1,3 +1,4 @@
+//Bruno Clemente e Thyago Stall
 #include "State.hpp"
 #include <algorithm>
 #include <math.h>
