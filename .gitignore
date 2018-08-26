@@ -11,7 +11,7 @@ CTestTestfile.cmake
 
 # Build
 /build/
-
+/cmake-build-debug/
 # CLion
 .idea/
 
