@@ -34,7 +34,14 @@ extern "C" {
 #include "remoteApi/extApiPlatform.h"
 }
 
-int main(int argc, char **argv) {
+int current_command = 0;
+vector<int> commands;
+
+void set_commands(const std::vector<int> &);
+int get_next_command();
+
+int main(int argc, char **argv)
+{
     //enderecamentos remoteapi
     vector<int> commands = depth_first_search();
     set_commands(commands);
@@ -527,4 +534,18 @@ int main(int argc, char **argv) {
     simxFinish(clientID); // fechando conexao com o servidor
     cout << "Conexao e Servidor fechados!" << std::endl;
     return 0;
+}
+
+void set_commands(const vector<int> &c)
+{
+    commands = c;
+    current_command = 0;
+}
+
+int get_next_command()
+{
+    if (current_command < commands.size()) {
+        return commands[current_command++];
+    }
+    return -1;
 }

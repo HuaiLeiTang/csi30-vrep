@@ -7,13 +7,14 @@ INCLUDE(FindPkgConfig)
 
 IF(CMAKE_COMPILER_IS_GNUCC)
 SET(CMAKE_CXX_FLAGS
-"${CMAKE_CXX_FLAGS}  -Wall -std=c++11 -DBUILD_SHARED_LIBS=OFF ")
+"${CMAKE_CXX_FLAGS} -Wall -std=c++11 -DBUILD_SHARED_LIBS=OFF ")
 ENDIF(CMAKE_COMPILER_IS_GNUCC)
 
 # definicoes da remoteAPI para CPP
 add_definitions(-DNON_MATLAB_PARSING)
 add_definitions(-DMAX_EXT_API_CONNECTIONS=255)
 
+set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 set(SOURCES
     remoteApi/extApi.c
@@ -29,7 +30,7 @@ set(HEADERS
     include/v_repConst.h
     include/v_repLib.h
 
-        path.cpp path.h)
+        path.cpp path.h state.cpp state.h command.cpp command.h)
 
 include_directories("include/")
 include_directories("remoteApi/")
