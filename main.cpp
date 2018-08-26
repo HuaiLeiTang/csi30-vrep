@@ -2,6 +2,7 @@
 #include <iostream>
 #include <vector>
 
+#include "AStarSearch.hpp"
 #include "DepthFirstSearch.hpp"
 #include "Path.hpp"
 
@@ -37,7 +38,8 @@ int get_next_command();
 
 int main(int argc, char **argv)
 {
-	PathFinder *finder = new  DepthFirstSearch(State::getStartState(), State::getEndState());
+	//PathFinder *finder = new  DepthFirstSearch(State::getStartState(), State::getEndState());
+	PathFinder *finder = new  AStarSearch(State::getStartState(), State::getEndState());
 	set_commands(Path::getPath(finder));
 	delete (finder);
 
@@ -147,6 +149,9 @@ int main(int argc, char **argv)
 
 		int comando = get_next_command();
 		cout << "Comando:" << comando << endl;
+		if (comando == -1) {
+			return 0;
+		}
 
 		simxGetObjectPosition(clientID, bubbleRob, -1, position, simx_opmode_buffer);
 		simxGetObjectOrientation(clientID, bubbleRob, -1, angle, simx_opmode_buffer);

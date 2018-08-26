@@ -1,5 +1,6 @@
 #include "State.hpp"
 #include <algorithm>
+#include <math.h>
 
 #define X 3
 #define MAP_SIZE 10
@@ -82,6 +83,16 @@ bool operator==(const State &s, const std::vector<State> &rhs) {
 	return find(rhs.begin(), rhs.end(), s) != rhs.end();
 }
 
+bool operator==(const State &s, const std::vector<State*> &rhs) {
+	return find(rhs.begin(), rhs.end(), s) != rhs.end();
+}
+
+bool operator==(const State *p_s, const State &s) {
+	return s.x == p_s->x &&
+	       s.y == p_s->y &&
+	       s.theta == p_s->theta;
+}
+
 bool State::operator==(const State &rhs) const {
 	return x == rhs.x &&
 		   y == rhs.y &&
@@ -90,6 +101,15 @@ bool State::operator==(const State &rhs) const {
 
 std::ostream& operator<<(std::ostream &o, const State &s) {
 	return o << "state{ " << s.x << ", " << s.y << ", " << s.theta << " }";
+}
+
+bool State::operator<(const State &b) {
+	State end_states[] = END_STATES;
+	return this->cost + euclidianDistance(*this, end_states[0])  < b.cost + euclidianDistance((State&)b, end_states[0]);
+}
+
+double State::euclidianDistance(State &a, State &b) {
+	return sqrt(pow(a.x - b.x, 2) + pow(a.y - b.y, 2));
 }
 
 std::ostream& operator<<(std::ostream& out, const std::vector<State>& vector) {

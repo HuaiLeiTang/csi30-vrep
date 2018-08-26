@@ -53,7 +53,7 @@ if(CMAKE_THREAD_LIBS_INIT)
   target_link_libraries(cppremoteapi "${CMAKE_THREAD_LIBS_INIT}")
 endif()
 
-TARGET_LINK_LIBRARIES(cppremoteapi ${Boost_LIBRARIES})
+TARGET_LINK_LIBRARIES(cppremoteapi ${Boost_LIBRARIES} -lm)
 target_link_libraries (cppremoteapi ${CMAKE_THREAD_LIBS_INIT})
 
 install(TARGETS cppremoteapi RUNTIME DESTINATION bin)
