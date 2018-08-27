@@ -44,7 +44,7 @@ public:
 	void setX(int x) { State::x = x; }
 	void setY(int y) { State::y = y; }
 	void setTheta(int theta) { State::theta = theta; }
-	void setCost(float cost) { State::cost = cost; }
+	void setCost(double cost) { State::cost = cost; }
 	void setMother(State *mother) {State::mother = mother; }
 
 private:

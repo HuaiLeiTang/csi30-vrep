@@ -12,9 +12,13 @@ std::vector<State> AStarSearch::find() {
 	while(!path_found) {
 		for(auto s: cursor_state->expand()) {
 			if (!(s == open_states)) {
-				auto state = new State(s);
-				state->setMother(cursor_state);
-				open_states.push_back(state);
+				addState(open_states, cursor_state, s);
+				continue;
+			}
+			auto old_state = *std::find(open_states.begin(), open_states.end(), s);
+			if (s.getCost() < old_state->getCost()) {
+				old_state->setCost(s.getCost());
+				old_state->setMother(cursor_state);
 			}
 		}
 		open_states.erase(open_states.begin());
@@ -25,6 +29,12 @@ std::vector<State> AStarSearch::find() {
 	}
 
 	return createVector(cursor_state);
+}
+
+void AStarSearch::addState(std::vector<State *> &open_states, State *cursor_state, const State &s) const {
+	auto state = new State(s);
+	state->setMother(cursor_state);
+	open_states.push_back(state);
 }
 
 std::vector<State> AStarSearch::createVector(State *state) {
