@@ -22,7 +22,9 @@ set(SOURCES
         DepthFirstSearch.cpp
         State.cpp
         Path.cpp
-        AStarSearch.cpp)
+        AStarSearch.cpp
+        GeneticAlgorithm.cpp
+        )
  
 set(HEADERS
         remoteApi/extApi.h
@@ -34,7 +36,9 @@ set(HEADERS
         State.hpp
         Path.hpp
         PathFinder.hpp
-        AStarSearch.hpp)
+        AStarSearch.hpp
+        GeneticAlgorithm.hpp
+        )
 
 include_directories("include/")
 include_directories("remoteApi/")
