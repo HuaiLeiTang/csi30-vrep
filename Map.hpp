@@ -1,3 +1,4 @@
+//Bruno Clemente e Thyago Stall
 #ifndef CPPREMOTEAPI_MAP_HPP
 #define CPPREMOTEAPI_MAP_HPP
 
