@@ -1,23 +1,8 @@
 //Bruno Clemente e Thyago Stall
 #include "State.hpp"
+#include "Map.hpp"
 #include <algorithm>
 #include <math.h>
-
-#define X 3
-#define MAP_SIZE 10
-int map_representation[MAP_SIZE][MAP_SIZE] = {
-		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-		{0, 0, 0, 0, X, X, X, X, X, X},
-		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-};
-
 
 
 std::vector<State> State::expand() {
@@ -73,11 +58,11 @@ bool State::isObstacle(int x, int y)  {
 		return true;
 	}
 
-	if (x >= MAP_SIZE || y >= MAP_SIZE) {
+	if (x >= Map::getSize() || y >= Map::getSize()) {
 		return true;
 	}
 
-	return map_representation[x][y] == X;
+	return Map::isObstacle(x, y);
 }
 
 bool operator==(const State &s, const std::vector<State> &rhs) {

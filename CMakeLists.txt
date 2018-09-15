@@ -24,8 +24,9 @@ set(SOURCES
         Path.cpp
         AStarSearch.cpp
         GeneticAlgorithm.cpp
+        Map.cpp
         )
- 
+
 set(HEADERS
         remoteApi/extApi.h
         remoteApi/extApiInternal.h
@@ -38,6 +39,7 @@ set(HEADERS
         PathFinder.hpp
         AStarSearch.hpp
         GeneticAlgorithm.hpp
+        Map.hpp
         )
 
 include_directories("include/")
