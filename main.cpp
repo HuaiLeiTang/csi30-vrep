@@ -6,6 +6,7 @@
 #include "AStarSearch.hpp"
 #include "DepthFirstSearch.hpp"
 #include "Path.hpp"
+#include "GeneticAlgorithm.hpp"
 
 using namespace std;
 
@@ -498,12 +499,18 @@ int main(int argc, char **argv)
 void selectPathFinder() {
 	int selection;
 	PathFinder *finder;
-	cout << "Choose which algorithm to use:\n" << "[1] Depth First Search\n" << "[2] A*\n";
+	cout << "Choose which algorithm to use: " << endl
+	     << "[1] Depth First Search"          << endl
+	     << "[2] A*" << endl
+	     << "[3] Genetic Algorithm" << endl;
+
 	cin >> selection;
-	if (selection == 1)
-		finder = new DepthFirstSearch(State::getStartState(), State::getEndState());
-	else
-		finder = new AStarSearch(State::getStartState(), State::getEndState());
+	switch (selection) {
+		case 1: finder = new DepthFirstSearch(State::getStartState(), State::getEndState()); break;
+		case 2: finder = new AStarSearch(State::getStartState(), State::getEndState()); break;
+		case 3: finder = new GeneticAlgorithm(State::getStartState(), State::getEndState()); break;
+	}
+
 	cout << "Finding path\n";
 	auto path = Path::getPath(finder);
 	cout << "Path found!\nThe size is: " << path.size() << endl;
