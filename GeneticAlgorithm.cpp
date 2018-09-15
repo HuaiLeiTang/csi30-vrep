@@ -17,16 +17,17 @@ std::vector<State> GeneticAlgorithm::find() {
     int generation = 0;
     std::vector<Point> population = this->initializePopulation();
     int currentEvaluation = this->evaluatePopulation(population);
-    printf("currentEvaluation -> %d\n", currentEvaluation);
+    printf("Generation %3d -> fitness(P) = %d\n", generation, currentEvaluation);
 
     while (currentEvaluation >= INF) {
         generation++;
         population = this->createNewGeneration(population);
         currentEvaluation = this->evaluatePopulation(population);
-        printf("currentEvaluation -> %d\n", currentEvaluation);
+        printf("Generation %3d -> fitness(P) = %d\n", generation, currentEvaluation);
     }
 
     Point best = this->select(population);
+    printf("Best point -> (%d, %d)\n", best.x, best.y);
     return this->findPathGoingThrough(best);
 }
 
@@ -50,12 +51,14 @@ std::vector<Point> GeneticAlgorithm::initializePopulation() {
     std::vector<Point> population;
     std::random_device rd;
 
+    printf("Initial population: [ ");
     for (int i = 0; i < POPULATION_SIZE; i++) {
         int x = rd() % 10;
         int y = rd() % 10;
         population.push_back({x, y});
-        printf("-> {%d, %d}\n", x, y);
+        printf("{%d, %d} ", x, y);
     }
+    printf("]\n");
     return population;
 }
 
@@ -160,7 +163,17 @@ int GeneticAlgorithm::distance(const State &state, const Point &point) {
 Point GeneticAlgorithm::mutate(const Point &point) {
     int increment[] = {-1, 0, 1};
     std::random_device rd;
-    return {point.x + increment[rd() % 3], point.y + increment[rd() % 3]};
+
+    int x = point.x + increment[rd() % 3];
+    int y = point.y + increment[rd() % 3];
+
+    x = std::min(x, Map::getSize() - 1);
+    y = std::min(y, Map::getSize() - 1);
+
+    x = std::max(x, 0);
+    y = std::max(y, 0);
+
+    return {x, y};
 }
 
 std::pair<Point, Point> GeneticAlgorithm::crossover(const Point &parent1, const Point &parent2) {
